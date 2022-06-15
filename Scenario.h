@@ -24,7 +24,7 @@ using namespace rapidjson;
 
 class Scenario {
 private:
-    std::unique_ptr<ObjectDetection> m_pObjDet = NULL;
+    //std::unique_ptr<ObjectDetection> m_pObjDet = NULL;
 
 	static char* weatherList[14];
 	static char* vehicleList[3];
@@ -76,17 +76,44 @@ private:
 	bool running = false;
 	Document d;
 
-    int m_startArea = 1; //Downtown (see s_locationBounds)
+    int m_startArea = 3; //Downtown (see s_locationBounds)
     std::vector<std::vector<char>> m_polyGrid;
 
     //Depth Map variables
-    float* depth_map = NULL;
-    uint8_t* m_stencilBuffer = NULL;
+    float* m_depth = nullptr;
+    float* depth_map = nullptr;
+    uint8_t* m_stencilBuffer = nullptr;
     unsigned char* color_buf = NULL;
 
     bool vehicles_created = false;
     std::vector<VehicleToCreate> vehiclesToCreate;
     std::vector<PedToCreate> pedsToCreate;
+
+    std::string depthFile;
+    std::string poseFile;
+    std::string veloFile;
+    std::string imageFile;
+    std::string calibFile;
+    std::string trashFile;
+
+    std::string baseFolder;
+    std::string veloFolder;
+    std::string depthFolder;
+    std::string imageFolder;
+    std::string poseFolder;
+    std::string trashFolder;
+
+    LiDAR lidar;
+    bool lidar_init = false;
+    int pointCloudSize = 0;
+    int lidar_param = 7;
+    std::unordered_map<int, HitLidarEntity*> m_entitiesHit;
+
+    Vector3 m_camForwardVector;
+    Vector3 m_camRightVector;
+    Vector3 m_camUpVector;
+
+    bool first_buffer = true;
 
 public:
 	float rate;
@@ -104,13 +131,13 @@ public:
 	ScreenCapturer* screenCapturer;
 	StringBuffer generateMessage();
 
-    void setRenderingCam(Vehicle v, int height, int length);
+    void setRenderingCam(Ped v, int height, int length, int sector);
     void generateSecondaryPerspectives();
     void generateSecondaryPerspective(ObjEntity vInfo);
     void capture();
 
-    int instance_index = 0;
-    int series_index = 0;
+    int instance_index;
+    int series_index;
     std::string series_string = "0000";
     std::string instance_string;
     int baseTrackingIndex = instance_index;
@@ -130,11 +157,21 @@ public:
     //Mode for outputting current position/heading (data not generated)
     bool m_positionScenario;
 
+    Vector3 vehicle_position;
+    Vector3 vehicle_rotation;
+    Vector3 default_rotation;
+    Vector3 real_rotation;
+    bool pose_initialized = false;
+    std::fstream file;
+
+    void setFilenames(int sector);
+
+
 private:
 	void parseScenarioConfig(const Value& sc, bool setDefaults);
 	void parseDatasetConfig(const Value& dc, bool setDefaults);
 	void buildScenario();
-
+    void exportCalib(std::string calibFile);
 	void setDirection();
 	void setReward();
 	void setThrottle();
@@ -147,7 +184,22 @@ private:
     void setCamParams();
     void setPosition();
     void setStencilBuffer();
+    void changeVehicleOriantation(Ped v, int sector);
+    void setCameraRotation(int sector);
+
+    void exportPose();
+
+    void setScanPose(Vehicle v, Vector3 position, Vector3 rotation);
 
     //Do not use this function. Causes GTA to crash - need to figure out why
     void setColorBuffer();
+
+    void setupLiDAR();
+    void collectLiDAR(float* depth);
+    void exportImage(BYTE* data, std::string filename = "");
+    void increaseIndex();
+    std::string getStandardFilename(std::string subDir, std::string extension, int type);
+    void exportDepth(float* depth);
+    void saveAllData(float* depth);
+
 };

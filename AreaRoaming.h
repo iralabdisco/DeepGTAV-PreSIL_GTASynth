@@ -26,6 +26,10 @@ const std::vector<std::vector<std::vector<float>>> s_locationBounds = {
 { 110.797f, -1409.013f },
 //scentral
     },
+    { 
+        {-1499.97f, -1583.08f, -1568.15f, -1268.75f, -896.67f, -1857.01f, -259.67f},
+        {4953.67f, 4747.212f, 4534.65f, 4561.67f, 4380.34f, 4411.35f, 3928.68f},
+    },//river and raton canyon
 };
 
 // loc:				the id of area to focus on, see settings.h => s_locationBounds
@@ -35,6 +39,7 @@ const std::vector<std::vector<std::vector<float>>> s_locationBounds = {
 
 static bool in_bounds(float x, float y, int loc, std::vector<std::vector<char>> &poly_grid)
 {
+    log("entro in in_bounds");
     int min_x = (int)round(*std::min_element(std::begin(s_locationBounds[loc][0]), std::end(s_locationBounds[loc][0])));
     int max_x = (int)round(*std::max_element(std::begin(s_locationBounds[loc][0]), std::end(s_locationBounds[loc][0])));
     int min_y = (int)round(*std::min_element(std::begin(s_locationBounds[loc][1]), std::end(s_locationBounds[loc][1])));
@@ -118,10 +123,12 @@ static bool in_bounds(float x, float y, int loc, std::vector<std::vector<char>> 
 
     int check_x = int(round(x - min_x));
     int check_y = int(round(y - min_y));
+    log("ma non esco");
     return check_x > 0 && check_y > 0 &&
         check_x < poly_grid.size() - 1 &&
         check_y < poly_grid[0].size() - 1 &&
         poly_grid[check_x][check_y] > 0;
+
 }
 
 static std::vector<std::pair<float, float>> generate_n_random_points(int loc, std::vector<std::vector<char>> &poly_grid, int num_points, float min_dist = 100, std::vector<std::pair<float, float>> init = {})

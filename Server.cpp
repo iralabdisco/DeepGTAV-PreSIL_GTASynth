@@ -127,7 +127,6 @@ void Server::checkRecvMessage() {
 void Server::checkSendMessage() {
 	int error;
 	int r;
-
     //Return from this function to allow time gaps between series
     if (scenario.collectTracking) {
         if (scenario.trSeriesGap) {
@@ -138,7 +137,6 @@ void Server::checkSendMessage() {
             scenario.trSeriesGap = false;
         }
     }
-
 	if (sendOutputs && (((float)(std::clock() - lastSentMessage) / CLOCKS_PER_SEC) > (1.0 / scenario.rate))) {
 		if (messageSize == 0) {
 			message = scenario.generateMessage();

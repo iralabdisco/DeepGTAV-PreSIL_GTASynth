@@ -2,6 +2,7 @@
 
 #include "Rewarder.h"
 #include <unordered_map>
+#include <stdexcept>
 
 typedef struct {
 	bool disabled; //Disabled (0)

@@ -49,26 +49,27 @@ def outputObjectInfo(text_file, instance, altBBox=True):
     #Rotation_y
     text_file.write(" %f" % instance['rotation_y'])
     
-def printInstances(filename, list, augment, tracking=False, frameID=0, altBBox=True):
+def printInstances(filename, list, augment, tracking=False, frameID=0, altBBox=False):
     text_file = open(filename, "a")
     for instance in list:
-        if not altBBox or instance['pointsHit2D'] > 0:
+        #if not altBBox or instance['pointsHit2D'] > 0:
+        if not altBBox:
             if tracking:
                 text_file.write("%d" % frameID)
-                text_file.write(" %d " % instance['entityID'])
+                text_file.write(" %d " % instance['classID'])
                 outputObjectInfo(text_file, instance, altBBox)
             else:
                 outputObjectInfo(text_file, instance, altBBox)
 
                 if augment:
                     #text_file.write(" Augmentations:")
-                    text_file.write(" %d" % instance['entityID'])
-                    text_file.write(" %d" % instance['pointsHit'])
+                    text_file.write(" %d" % instance['classID'])
+                    #text_file.write(" %d" % instance['pointsHit'])
                     text_file.write(" %f" % instance['speed'])
                     #text_file.write(" %f" % instance['heading'])
-                    text_file.write(" %f" % instance['pitch'])
-                    text_file.write(" %f" % instance['roll'])
-                    text_file.write(" %s" % instance['modelString'])
+                    #text_file.write(" %f" % instance['pitch'])
+                    #text_file.write(" %f" % instance['roll'])
+                    #text_file.write(" %s" % instance['modelString'])
                     
                     # if instance['offscreen']:
                     #     text_file.write(" 0")
