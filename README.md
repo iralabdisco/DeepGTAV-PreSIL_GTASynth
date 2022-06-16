@@ -1,3 +1,13 @@
+This is a modified version of [DeepGTAV-PreSIL](https://github.com/bradenhurl/DeepGTAV-PreSIL) we used to generate the [GTASynth](https://osf.io/pku3e/) dataset. For the details of the simulated acquisition setup, please read the associated paper [TODO].
+
+If you are using this software for your research, please cite also the original paper:
+
+```
+Hurl, Braden, Krzysztof Czarnecki, and Steven Waslander. 
+Precise synthetic image and lidar (presil) dataset for autonomous vehicle perception.
+2019 IEEE Intelligent Vehicles Symposium (IV). IEEE, 2019.
+```
+
 # DeepGTAV - PreSIL
 ## Precise Synthetic Image and LiDAR Dataset for Autonomous Vehicle Perception
 
